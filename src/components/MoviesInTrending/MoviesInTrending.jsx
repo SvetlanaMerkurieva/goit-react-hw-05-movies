@@ -8,7 +8,7 @@ export const MoviesInTrending = () => {
 
   useEffect(() => {
     fetch(
-      'https://api.themoviedb.org/3/trending/movie/week?api_key=597522cf6881ad12863cfcef806a7c6d&page=1&per_page=20',
+      'https://api.themoviedb.org/3/trending/movie/day?api_key=597522cf6881ad12863cfcef806a7c6d&page=1&per_page=20',
     )
       .then(res => {
         if (res.ok) {

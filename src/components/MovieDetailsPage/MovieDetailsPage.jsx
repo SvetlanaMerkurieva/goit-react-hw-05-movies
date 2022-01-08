@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useRouteMatch, Route } from 'react-router-dom';
+import { Cast } from '../Cast/Cast';
+import { Reviews } from '../Reviews/Reviews';
+import s from '../MovieDetailsPage/MovieDetailsPage.module.css';
 
 export const MovieDetailsPage = () => {
   const { movieId } = useParams();
+  const { url } = useRouteMatch();
 
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
@@ -19,15 +23,15 @@ export const MovieDetailsPage = () => {
       })
       .then(movie => setMovie(movie))
       .catch(e => setError(e));
-  }, []);
+  }, [movieId]);
 
   return (
     <div>
       {error && <h1>{error.message}</h1>}
       <button type="button">Go back</button>
       {movie && (
-        <section>
-          <img srs={movie.poster_path} alt={movie.title}></img>
+        <section className={s.section}>
+          <img src={movie.poster_path} alt={movie.title}></img>
           <h1>
             {movie.title}({movie.release_date})
           </h1>
@@ -45,10 +49,20 @@ export const MovieDetailsPage = () => {
       <div>
         <p>Additional information</p>
         <ul>
-          <li>Cast</li>
-          <li>Reviews</li>
+          <li>
+            <Link to={`${url}/cast`}>Cast</Link>
+          </li>
+          <li>
+            <Link to={`${url}/reviews`}>Reviews</Link>
+          </li>
         </ul>
       </div>
+      <Route path="/movies/:movieId/cast">
+        <Cast />
+      </Route>
+      <Route path="/movies/:movieId/reviews">
+        <Reviews />
+      </Route>
     </div>
   );
 };
