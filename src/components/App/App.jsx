@@ -1,6 +1,16 @@
+import { Switch, Route } from 'react-router-dom';
 import { Navigation } from '../Navigation/Navigation';
-import s from './App.module.css';
+import { HomePage } from '../../pages/HomePage';
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <>
+      <Navigation />
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+    </>
+  );
 }
