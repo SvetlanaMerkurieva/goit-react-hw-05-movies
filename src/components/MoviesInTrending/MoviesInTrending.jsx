@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
 export const MoviesInTrending = () => {
@@ -27,7 +28,9 @@ export const MoviesInTrending = () => {
       {movies && (
         <ul>
           {movies.results.map(movie => (
-            <li key={shortid()}>{movie.title}</li>
+            <li key={shortid()}>
+              <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+            </li>
           ))}
         </ul>
       )}
