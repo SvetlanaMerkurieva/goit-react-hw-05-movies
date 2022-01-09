@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import s from './Reviews.module.css';
 
 export const Reviews = () => {
   const { movieId } = useParams();
@@ -24,7 +25,7 @@ export const Reviews = () => {
   }, [movieId]);
 
   return (
-    <div>
+    <div className={s.div}>
       {error && <h1>{error.message}</h1>}
       {reviews && (
         <section>

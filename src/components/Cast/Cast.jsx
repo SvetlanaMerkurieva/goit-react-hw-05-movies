@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import s from './Cast.module.css';
 
 export const Cast = () => {
   const { movieId } = useParams();
@@ -21,14 +22,20 @@ export const Cast = () => {
       .catch(e => setError(e));
   }, [movieId]);
 
+  console.log(actors);
+
   return (
-    <div>
+    <div className={s.div}>
       {error && <h1>{error.message}</h1>}
       {actors && (
-        <section>
+        <section className={s.actors}>
           {actors.map(actor => (
-            <div key={actor.id}>
-              <img src={actor.poster_path} alt={actor.name}></img>
+            <div className={s.item} key={actor.id}>
+              <img
+                className={s.image}
+                src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+                alt={actor.name}
+              ></img>
               <h3>{actor.original_name}</h3>
               <p>Character: {actor.character}</p>
             </div>

@@ -1,3 +1,26 @@
+.button {
+  margin-top: 10px;
+  margin-left: 20px;
+  border-radius: 5px;
+  background-color: rgb(202, 227, 241);
+  cursor: pointer;
+}
 .section {
+  margin-top: 10px;
+  padding-left: 20px;
   border-bottom: 3px solid #757575;
+  display: flex;
+}
+.image {
+  width: 250px;
+  height: 350px;
+}
+.description {
+  margin-left: 20px;
+}
+.title {
+  margin-top: 0;
+}
+.addInfo {
+  padding-left: 20px;
 }

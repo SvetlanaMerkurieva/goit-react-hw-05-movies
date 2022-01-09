@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useRouteMatch, Route } from 'react-router-dom';
+import {
+  useParams,
+  Link,
+  useRouteMatch,
+  Route,
+  useLocation,
+  useHistory,
+} from 'react-router-dom';
 import { Cast } from '../Cast/Cast';
 import { Reviews } from '../Reviews/Reviews';
 import s from '../MovieDetailsPage/MovieDetailsPage.module.css';
@@ -7,6 +14,8 @@ import s from '../MovieDetailsPage/MovieDetailsPage.module.css';
 export const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const { url } = useRouteMatch();
+  const history = useHistory();
+  const location = useLocation();
 
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
@@ -25,35 +34,53 @@ export const MovieDetailsPage = () => {
       .catch(e => setError(e));
   }, [movieId]);
 
+  const onClickGoBack = () => {
+    history.push(location?.state?.from ?? '/');
+  };
+
   return (
     <div>
       {error && <h1>{error.message}</h1>}
-      <button type="button">Go back</button>
+      <button type="button" onClick={onClickGoBack} className={s.button}>
+        Go back
+      </button>
       {movie && (
         <section className={s.section}>
-          <img src={movie.poster_path} alt={movie.title}></img>
-          <h1>
-            {movie.title}({movie.release_date})
-          </h1>
-          <p>User Score: {movie.vote_average}</p>
-          <h2>Overview</h2>
-          <p>{movie.overview}</p>
-          <h3>Genres</h3>
-          <ul>
-            {movie.genres.map(genre => (
-              <li key={genre.id}>{genre.name}</li>
-            ))}
-          </ul>
+          <img
+            className={s.image}
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+          ></img>
+          <div className={s.description}>
+            <h1 className={s.title}>
+              {movie.title} ({movie.release_date.substr(0, 4)})
+            </h1>
+            <p>User Score: {movie.vote_average}</p>
+            <h2>Overview</h2>
+            <p>{movie.overview}</p>
+            <h3>Genres</h3>
+            <ul>
+              {movie.genres.map(genre => (
+                <li key={genre.id}>{genre.name}</li>
+              ))}
+            </ul>
+          </div>
         </section>
       )}
-      <div>
-        <p>Additional information</p>
+      <div className={s.addInfo}>
+        <h3>Additional information</h3>
         <ul>
           <li>
-            <Link to={`${url}/cast`}>Cast</Link>
+            <Link to={{ pathname: `${url}/cast`, state: { from: location } }}>
+              Cast
+            </Link>
           </li>
           <li>
-            <Link to={`${url}/reviews`}>Reviews</Link>
+            <Link
+              to={{ pathname: `${url}/reviews`, state: { from: location } }}
+            >
+              Reviews
+            </Link>
           </li>
         </ul>
       </div>

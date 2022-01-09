@@ -1,0 +1,21 @@
+.div {
+  padding-left: 20px;
+}
+
+.actors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: -15px;
+  margin-top: -15px;
+}
+.item {
+  flex-basis: calc(100% / 5 - 15px);
+  margin-left: 15px;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+.image {
+  width: 165px;
+  height: 235px;
+}
