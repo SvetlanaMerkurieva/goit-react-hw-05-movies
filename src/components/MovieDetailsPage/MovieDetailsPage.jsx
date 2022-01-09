@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+//import { lazy, Suspense } from 'react'; - НЕ РАБОТАЕТ
 import {
   useParams,
   Link,
@@ -11,11 +12,20 @@ import { Cast } from '../Cast/Cast';
 import { Reviews } from '../Reviews/Reviews';
 import s from '../MovieDetailsPage/MovieDetailsPage.module.css';
 
+//const Cast = lazy(() =>
+// import('../Cast/Cast.jsx' /*webpackChunckName: "cast"*/),
+//);
+//const Reviews = lazy(() =>
+// import('../Reviews/Reviews.jsx' /*webpackChunckName: "reviews"*/),
+//); - НЕ РАБОТАЕТ
+
 export const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const { url } = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
+
+  console.log(location);
 
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
@@ -37,6 +47,7 @@ export const MovieDetailsPage = () => {
   const onClickGoBack = () => {
     history.push(location?.state?.from ?? '/');
   };
+  console.log(movie);
 
   return (
     <div>
@@ -71,7 +82,12 @@ export const MovieDetailsPage = () => {
         <h3>Additional information</h3>
         <ul>
           <li>
-            <Link to={{ pathname: `${url}/cast`, state: { from: location } }}>
+            <Link
+              to={{
+                pathname: `${url}/cast`,
+                state: { from: location },
+              }}
+            >
               Cast
             </Link>
           </li>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import s from './MoviesPage.module.css';
 
@@ -9,6 +9,25 @@ export const MoviesPage = () => {
   const [nameMovies, setNameMovies] = useState('');
   const [movies, setMovies] = useState(null);
   const [error, setError] = useState(null);
+
+  const searchQuery = new URLSearchParams(location.search).get('query');
+  useEffect(() => {
+    if (searchQuery) {
+      fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=597522cf6881ad12863cfcef806a7c6d&language=en-US&query=${searchQuery}&page=1&include_adult=false`,
+      )
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(
+            new Error(`К сожалению, по Вашему запросу фильмов нет`),
+          );
+        })
+        .then(movies => setMovies(movies.results))
+        .catch(e => setError(e));
+    }
+  }, [searchQuery]);
 
   const onChangeNameMovies = e => {
     setNameMovies(e.target.value);

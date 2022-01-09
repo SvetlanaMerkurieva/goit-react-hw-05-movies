@@ -6,6 +6,7 @@ export const Reviews = () => {
   const { movieId } = useParams();
 
   const [reviews, setReviews] = useState(null);
+  const [reviewsLength, setReviewsLength] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -20,10 +21,13 @@ export const Reviews = () => {
       })
       .then(reviews => {
         setReviews(reviews.results);
+        setReviewsLength(reviews.results.length);
       })
       .catch(e => setError(e));
-  }, [movieId]);
+  }, [movieId, reviewsLength]);
 
+  if (reviewsLength === 0) {
+    return <h3 className={s.text}>К сожалению, обзоров фильма нет</h3>;
   return (
     <div className={s.div}>
       {error && <h1>{error.message}</h1>}

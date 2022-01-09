@@ -6,6 +6,8 @@ import s from './HomePage.module.css';
 export const HomePage = () => {
   const location = useLocation();
 
+  console.log(location);
+
   const [movies, setMovies] = useState(null);
   const [error, setError] = useState(null);
 
@@ -23,8 +25,6 @@ export const HomePage = () => {
       .catch(e => setError(e));
   }, []);
 
-  console.log(movies);
-
   return (
     <section className={s.movies}>
       <h1>Trending today</h1>
@@ -34,7 +34,8 @@ export const HomePage = () => {
           <ul>
             {movies.results.map(movie => (
               <li key={shortid()}>
-                <Link className={s.link}
+                <Link
+                  className={s.link}
                   to={{
                     pathname: `/movies/${movie.id}`,
                     state: { from: location },
