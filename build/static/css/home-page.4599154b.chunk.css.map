@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/components/HomePage/HomePage.module.css"],"names":[],"mappings":"AAAA,wBACE,iBACF,CACA,8BACE,oBACF","file":"home-page.4599154b.chunk.css","sourcesContent":[".movies {\r\n  padding-left: 20px;\r\n}\r\n.link:visited {\r\n  text-decoration: none;\r\n}\r\n"]}

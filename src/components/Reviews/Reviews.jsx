@@ -27,7 +27,8 @@ export const Reviews = () => {
   }, [movieId, reviewsLength]);
 
   if (reviewsLength === 0) {
-    return <h3 className={s.text}>К сожалению, обзоров фильма нет</h3>;
+    return <h3 className={s.text}>К сожалению, отзывов о фильме нет</h3>;
+  }
   return (
     <div className={s.div}>
       {error && <h1>{error.message}</h1>}
