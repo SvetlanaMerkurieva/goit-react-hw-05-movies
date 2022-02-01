@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-//import { lazy, Suspense } from 'react'; - НЕ РАБОТАЕТ
+import { lazy, Suspense } from 'react';
 import {
   useParams,
   Link,
@@ -8,24 +8,22 @@ import {
   useLocation,
   useHistory,
 } from 'react-router-dom';
-import { Cast } from '../Cast/Cast';
-import { Reviews } from '../Reviews/Reviews';
+//import { Cast } from '../Cast/Cast';
+//import { Reviews } from '../Reviews/Reviews';
 import s from '../MovieDetailsPage/MovieDetailsPage.module.css';
 
-//const Cast = lazy(() =>
-// import('../Cast/Cast.jsx' /*webpackChunckName: "cast"*/),
-//);
-//const Reviews = lazy(() =>
-// import('../Reviews/Reviews.jsx' /*webpackChunckName: "reviews"*/),
-//); - НЕ РАБОТАЕТ
+const Cast = lazy(() =>
+  import('../Cast/Cast.jsx' /*webpackChunckName: "cast"*/),
+);
+const Reviews = lazy(() =>
+  import('../Reviews/Reviews.jsx' /*webpackChunckName: "reviews"*/),
+);
 
-export const MovieDetailsPage = () => {
+const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const { url } = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
-
-  console.log(location);
 
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
@@ -44,10 +42,11 @@ export const MovieDetailsPage = () => {
       .catch(e => setError(e));
   }, [movieId]);
 
+  const pathFrom = location?.state?.from ?? '/';
+
   const onClickGoBack = () => {
-    history.push(location?.state?.from ?? '/');
+    history.push(pathFrom);
   };
-  console.log(movie);
 
   return (
     <div>
@@ -85,7 +84,7 @@ export const MovieDetailsPage = () => {
             <Link
               to={{
                 pathname: `${url}/cast`,
-                state: { from: location },
+                state: { from: pathFrom },
               }}
             >
               Cast
@@ -93,19 +92,18 @@ export const MovieDetailsPage = () => {
           </li>
           <li>
             <Link
-              to={{ pathname: `${url}/reviews`, state: { from: location } }}
+              to={{ pathname: `${url}/reviews`, state: { from: pathFrom } }}
             >
               Reviews
             </Link>
           </li>
         </ul>
       </div>
-      <Route path="/movies/:movieId/cast">
-        <Cast />
-      </Route>
-      <Route path="/movies/:movieId/reviews">
-        <Reviews />
-      </Route>
+      <Suspense fallback={<h1>Загружаем...</h1>}>
+        <Route path="/movies/:movieId/cast" component={Cast} />
+        <Route path="/movies/:movieId/reviews" component={Reviews} />
+      </Suspense>
     </div>
   );
 };
+export default MovieDetailsPage;

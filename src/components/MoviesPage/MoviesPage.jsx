@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import s from './MoviesPage.module.css';
 
-export const MoviesPage = () => {
+const MoviesPage = () => {
   const location = useLocation();
   const history = useHistory();
 
@@ -29,11 +29,21 @@ export const MoviesPage = () => {
     }
   }, [searchQuery]);
 
-  const onChangeNameMovies = e => {
-    setNameMovies(e.target.value);
+  const onChangeNameMovies = ({ currentTarget: { value } }) => {
+    setNameMovies(value.toLowerCase());
   };
 
-  const onSearchMovies = () => {
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (nameMovies.trim() === '') {
+      return alert('Введите ключевое слово для поиска');
+    }
+    onSearchMovies(nameMovies);
+    history.push({ ...location, search: `query=${nameMovies}` });
+  };
+
+  const onSearchMovies = nameMovies => {
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=597522cf6881ad12863cfcef806a7c6d&language=en-US&query=${nameMovies}&page=1&include_adult=false`,
     )
@@ -48,15 +58,12 @@ export const MoviesPage = () => {
       .then(movies => setMovies(movies.results))
       .catch(e => setError(e));
 
-    history.push({ ...location, search: `query=${nameMovies}` });
     setNameMovies('');
   };
-  console.log(location);
-  console.log(movies);
 
   return (
     <>
-      <form className={s.form}>
+      <form className={s.form} onSubmit={handleSubmit}>
         <input
           className={s.input}
           type="text"
@@ -64,7 +71,7 @@ export const MoviesPage = () => {
           onChange={onChangeNameMovies}
           placeholder="Enter a word to search for movies"
         ></input>
-        <button type="button" onClick={onSearchMovies} className={s.button}>
+        <button type="subnit" className={s.button}>
           Search
         </button>
       </form>
@@ -91,3 +98,5 @@ export const MoviesPage = () => {
     </>
   );
 };
+
+export default MoviesPage;

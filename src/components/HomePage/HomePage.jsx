@@ -3,10 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import shortid from 'shortid';
 import s from './HomePage.module.css';
 
-export const HomePage = () => {
+const HomePage = () => {
   const location = useLocation();
-
-  console.log(location);
 
   const [movies, setMovies] = useState(null);
   const [error, setError] = useState(null);
@@ -51,3 +49,5 @@ export const HomePage = () => {
     </section>
   );
 };
+
+export default HomePage;
